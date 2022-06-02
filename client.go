@@ -13,8 +13,8 @@ type Client struct {
 	Host    string
 	Url     string
 	Header  map[string]string
-	reqBody string
-	urlArgs map[string]string
+	ReqBody string
+	UrlArgs map[string]string
 	Retry
 }
 type Res struct {
@@ -24,7 +24,7 @@ type Res struct {
 
 func (my *Client) do() (Res, error) {
 	client := &http.Client{}
-	req, err := http.NewRequest(my.Method, my.Url, strings.NewReader(my.reqBody))
+	req, err := http.NewRequest(my.Method, my.Url, strings.NewReader(my.ReqBody))
 	if err != nil {
 		return Res{}, err
 	}
@@ -41,7 +41,7 @@ func (my *Client) do() (Res, error) {
 
 	//添加url参数
 	params := req.URL.Query()
-	for argK, argV := range my.urlArgs {
+	for argK, argV := range my.UrlArgs {
 		params.Add(argK, argV)
 	}
 	req.URL.RawQuery = params.Encode()
